@@ -11,9 +11,9 @@ var userName = "Nhat";
 let age = 22;
 const country = "Viet Nam";
 
-console.log("var userName: ", userName);
-console.log("let age: ", age);
-console.log("const country: ", country);
+console.log("var userName:", userName);
+console.log("let age:", age);
+console.log("const country:", country);
 
 /*
     Ghi nhớ nhanh
@@ -28,10 +28,10 @@ var job = "Full-stack Developer";
 console.log("Lần 1:", job);
 
 job = "Backend Developer";
-console.log("Sau khi gắn lại giá trị: ", job);
+console.log("Sau khi gắn lại giá trị:", job);
 
 var job = "Frontend Developer";
-console.log("Sau khi gắn lại bằng var: ", job);
+console.log("Sau khi gắn lại bằng var:", job);
 /* 
     Điểm cẩn thận với var:
     Var cho phép khai báo lại nên đôi khi mình vô tình ghi đè giá trị cũ.
@@ -40,10 +40,10 @@ console.log("Sau khi gắn lại bằng var: ", job);
 console.log("\n=== 3. let: Có thể gắn lại nhưng không được khai báo lại ===");
 
 let score = 10;
-console.log("Score lần 1: ", score);
+console.log("Score lần 1:", score);
 
 score = 20;
-console.log("Score lần 2: ", score);
+console.log("Score lần 2:", score);
 
 // Lỗi: let không được khai báo lại trong cùng một scope
 // VD: let score = 10, mà phía dưới let score = 20l thì báo SyntaxError: Identifier 'score' has already been declared
@@ -58,7 +58,7 @@ console.log("Score lần 2: ", score);
 
 console.log("\n=== 4. const: Không được gắn lại ===");
 const pi = 3.14;
-console.log("pi: ", pi);
+console.log("pi:", pi);
 /* 
     Lỗi: const không cho gắn giá trị mới
     const pi = 3.14159 // TypeError: Assignment to constant variable
@@ -77,7 +77,7 @@ const user = {
     name: "Nhat",
     age: 22,
 }
-console.log("User ban đầu: ", user);
+console.log("User ban đầu:", user);
 
 user.age = "23"
 console.log("Sau khi đổi thuộc tính age", user);

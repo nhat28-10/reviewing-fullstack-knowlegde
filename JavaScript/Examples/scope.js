@@ -21,21 +21,21 @@ console.log("=== 1. Scope là gì? ===");
 
 const globalMessage = "Tôi ở Global Scope"
 function showMessage() {
-    console.log("Trong function: ", globalMessage)
+  console.log("Trong function:", globalMessage)
 }
 showMessage();
-console.log("Ngoài function: ", globalMessage);
+console.log("Ngoài function:", globalMessage);
 
 console.log("\n=== 2. Global Scope ===");
 
 const appName = "Review JavaScript";
 let currentTopic = "Scope";
-console.log("appName: ", appName);
-console.log("currentTopic: ", currentTopic);
+console.log("appName:", appName);
+console.log("currentTopic:", currentTopic);
 
 function printGlobalInfo() {
-    console.log("Trong function vẫn đọc được appName: ", appName);
-    console.log("Trong function vẫn đọc được currentTopic: ", currentTopic);
+  console.log("Trong function vẫn đọc được appName:", appName);
+  console.log("Trong function vẫn đọc được currentTopic:", currentTopic);
 }
 printGlobalInfo();
 
@@ -50,14 +50,14 @@ printGlobalInfo();
 console.log("\n=== 3. Function Scope ===");
 
 function learnFunctionScope() {
-    const lessonName = "Function Scope";
-    let duration = 30;
-    var level = "Basic"
+  const lessonName = "Function Scope";
+  let duration = 30;
+  var level = "Basic"
 
-    console.log("Trong function - lessonName:", lessonName);
-    console.log("Trong function - duration:", duration);
-    console.log("Trong function - level:", level);
-    // learnFunctionScope() // Gọi trong function nhé!
+  console.log("Trong function - lessonName:", lessonName);
+  console.log("Trong function - duration:", duration);
+  console.log("Trong function - level:", level);
+  // learnFunctionScope() // Gọi trong function nhé!
 }
 learnFunctionScope();
 
@@ -80,10 +80,10 @@ learnFunctionScope();
 
 console.log("\n=== 4. Block Scope với let và const ===");
 if (true) {
-    const blockMessage = "Tôi ở trong Block"
-    let blockCount = 1;
-    console.log("Trong block - blockMessage: ", blockMessage)
-    console.log("Trong block - blockCount: ", blockCount);
+  const blockMessage = "Tôi ở trong Block"
+  let blockCount = 1;
+  console.log("Trong block - blockMessage:", blockMessage)
+  console.log("Trong block - blockCount:", blockCount);
 }
 
 // Lỗi: let/const chỉ tồn tại trong block nơi nó được khai báo.
@@ -107,9 +107,9 @@ if (true) {
 console.log("\n=== 5. var không có block scope ===");
 
 if (true) {
-    var varInBlock = "var nằm trong if block"
+  var varInBlock = "var nằm trong if block"
 }
-console.log("Ngoài block vẫn đọc được varInBlock: ", varInBlock);
+console.log("Ngoài block vẫn đọc được varInBlock:", varInBlock);
 
 /*
   Đây là điểm dễ nhầm:
@@ -124,10 +124,10 @@ console.log("Ngoài block vẫn đọc được varInBlock: ", varInBlock);
 console.log("\n=== 6. var vẫn bị giới hạn bởi function scope ===");
 
 function testVarFunctionScope() {
-    if (true) {
-        var message = "Var trong block nhưng thuộc function"
-    }
-    console.log("Trong function đọc được message: ", message);
+  if (true) {
+    var message = "Var trong block nhưng thuộc function"
+  }
+  console.log("Trong function đọc được message:", message);
 }
 testVarFunctionScope()
 
@@ -145,15 +145,15 @@ console.log("\n=== 7. Scope lookup: tìm biến từ trong ra ngoài ===");
 
 const language = "JavaScript";
 function outer() {
-    const topic = "Scope";
+  const topic = "Scope";
 
-    function inner() {
-        const level = "Basic"
-        console.log("inner đọc được level: ", level)
-        console.log("inner đọc được topic: ", topic)
-        console.log("inner đọc được language", language)
-    }
-    inner();
+  function inner() {
+    const level = "Basic"
+    console.log("inner đọc được level:", level)
+    console.log("inner đọc được topic:", topic)
+    console.log("inner đọc được language", language)
+  }
+  inner();
 }
 outer();
 
@@ -175,11 +175,11 @@ console.log("\n=== 8. Shadowing ===");
 
 const userName = "Nhat";
 function showUserName() {
-    const userName = "John"
-    console.log("Trong function: ", userName)
+  const userName = "John"
+  console.log("Trong function:", userName)
 }
 showUserName();
-console.log("Ngoài function: ", userName)
+console.log("Ngoài function:", userName)
 
 /*
   Shadowing xảy ra khi biến ở scope bên trong
@@ -197,10 +197,10 @@ console.log("\n=== 9. Shadowing trong block ===");
 
 let status = "global status"
 if (true) {
-    let status = "block status"
-    console.log("Trong block: ", status)
+  let status = "block status"
+  console.log("Trong block:", status)
 }
-console.log("Ngoài block: ", status)
+console.log("Ngoài block:", status)
 
 /*
   let/const cho phép khai báo biến trùng tên
@@ -214,13 +214,13 @@ console.log("\n=== 10. Lexical Scope ===");
 
 const school = "JavaScript School"
 function createLesson() {
-    const lesson = "Scope"
+  const lesson = "Scope"
 
-    function printLesson() {
-        console.log("school: ", school)
-        console.log("lesson: ", lesson)
-    }
-    return printLesson();
+  function printLesson() {
+    console.log("school:", school)
+    console.log("lesson:", lesson)
+  }
+  return printLesson();
 }
 const lessonPrinter = createLesson();
 lessonPrinter();
@@ -237,13 +237,13 @@ lessonPrinter();
 console.log("\n=== 11. Lỗi thường gặp: dùng biến ngoài scope ===");
 
 function calculateTotal() {
-    const price = 100;
-    const quantity = 2;
+  const price = 100;
+  const quantity = 2;
 
-    return price * quantity;
+  return price * quantity;
 }
 const total = calculateTotal();
-console.log("Total: ", total)
+console.log("Total:", total)
 
 // Lỗi: price chỉ tồn tại trong function calculateTotal.
 // console.log(price);
