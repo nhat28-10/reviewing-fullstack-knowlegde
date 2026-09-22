@@ -5,3 +5,8 @@
 ### 2. What is Temporal Dead Zone?
 
 - TDZ là khoảng thời gian từ lúc bắt đầu scope cho đến khi biến let hoặc const được khai báo và initialized. Trong khoảng đó biến không thể được truy cập.
+
+### 3. Primitive type và reference type khác nhau như thế nào?
+
+- Primitive values được copy theo giá trị, nên thay đổi biến mới không ảnh hưởng biến ban đầu. Với object, array hoặc function, các biến có thể cùng tham chiếu đến một object, nên thay đổi object qua một reference có thể được nhìn thấy qua reference khác.
+- Với `null` vs `undefined` thì nói `undefined`thường xuất hiện khi một biến hoặc property chưa có giá trị, còn `null` thường được developer chủ động dùng để biểu diễn việc không có giá trị.
