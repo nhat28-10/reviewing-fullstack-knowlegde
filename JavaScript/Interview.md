@@ -38,3 +38,11 @@
 ### 9. Should we use arrow functions for object methods?
 
 -Nếu method cần dynamic `this` để truy cập object thì thường nên dùng regular method thay vì arrow function
+
+### 10. What is a closure in JavaScript?
+
+- A closure happens when a function remembers and can access variables from its outer lexical scope even after the outer function has finished executing.
+
+### 11. Why are closures useful?
+
+- Closures are useful for maintaining private state, creating function factories, event handlers, callbacks, and middleware configurations.
