@@ -18,3 +18,23 @@
 ### 5. What is the difference between Truthy and Falsy?
 
 - `Truthy` and `Falsy` describe how JavaScript treats values in a boolean context. Values like `0, empty string, null, undefined, NaN, and false` are falsy, while values such as non-empty strings, arrays, and objects are truthy.
+
+### 6. What is the difference between a regular function and an arrow function?
+
+- syntax
+- this
+- constructor
+- arguments
+- Nhưng trọng tâm là `this`
+
+### 7. How does this work in JavaScript?
+
+- Với regular function, `this` phụ thuộc vào cách function được gọi. Khi gọi `obj.method()`, `this` thường là `obj`. Arrow function thì không có `this` riêng mà kế thừa `this` từ lexical scope bên ngoài.
+
+### 8. Why would you use an arrow function?
+
+- Tôi thường dùng arrow function cho callback hoặc khi muốn giữ this của surrounding scope.
+
+### 9. Should we use arrow functions for object methods?
+
+-Nếu method cần dynamic `this` để truy cập object thì thường nên dùng regular method thay vì arrow function
