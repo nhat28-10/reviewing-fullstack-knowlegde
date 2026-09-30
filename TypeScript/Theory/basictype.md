@@ -1,6 +1,6 @@
 # TypeScript Theory
 
-## Basic Types
+## 1. Basic Types
 
 ### 1. Bản chất
 
