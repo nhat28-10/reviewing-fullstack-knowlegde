@@ -8,14 +8,14 @@ Nếu đã học ReactJS, React Native sẽ khá dễ tiếp cận vì vẫn dù
 
 Điểm khác biệt lớn nhất là React Native không render ra HTML DOM. Thay vào đó, React Native dùng các component giao diện riêng và ánh xạ chúng sang UI native của iOS/Android.
 
-| React Native | Mục đích | Tương tự trong ReactJS |
-| --- | --- | --- |
-| `View` | Container để chứa và bố trí các component khác | `div`, `section` |
-| `Text` | Hiển thị văn bản | `p`, `span`, `h1` |
-| `Image` | Hiển thị hình ảnh local hoặc từ URL | `img` |
-| `TextInput` | Nhận dữ liệu người dùng nhập | `input`, `textarea` |
-| `Pressable` | Xử lý thao tác nhấn với nhiều trạng thái linh hoạt | `button` có event |
-| `TouchableOpacity` | Xử lý nhấn và tự giảm opacity khi được nhấn | `button` có hiệu ứng |
+| React Native       | Mục đích                                           | Tương tự trong ReactJS |
+| ------------------ | -------------------------------------------------- | ---------------------- |
+| `View`             | Container để chứa và bố trí các component khác     | `div`, `section`       |
+| `Text`             | Hiển thị văn bản                                   | `p`, `span`, `h1`      |
+| `Image`            | Hiển thị hình ảnh local hoặc từ URL                | `img`                  |
+| `TextInput`        | Nhận dữ liệu người dùng nhập                       | `input`, `textarea`    |
+| `Pressable`        | Xử lý thao tác nhấn với nhiều trạng thái linh hoạt | `button` có event      |
+| `TouchableOpacity` | Xử lý nhấn và tự giảm opacity khi được nhấn        | `button` có hiệu ứng   |
 
 Các component trên chỉ tương đương về mục đích sử dụng, không phải cùng một loại phần tử với HTML.
 
@@ -99,7 +99,7 @@ const [name, setName] = useState("");
   value={name}
   onChangeText={setName}
   placeholder="Nhập tên của bạn"
-/>
+/>;
 ```
 
 Khác với ReactJS:
@@ -119,7 +119,7 @@ onChangeText={(text) => setName(text)}
 Có thể viết ngắn hơn:
 
 ```jsx
-onChangeText={setName}
+onChangeText = { setName };
 ```
 
 ### 6. Pressable
@@ -143,10 +143,7 @@ onChangeText={setName}
 
 ```jsx
 <Pressable
-  style={({ pressed }) => [
-    styles.button,
-    pressed && styles.buttonPressed,
-  ]}
+  style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
 >
   <Text>Pressable button</Text>
 </Pressable>
@@ -166,12 +163,12 @@ Khi người dùng nhấn, component sẽ tự giảm opacity để tạo phản
 
 ### 8. Pressable vs TouchableOpacity
 
-| Tiêu chí | Pressable | TouchableOpacity |
-| --- | --- | --- |
-| Mức độ linh hoạt | Cao hơn | Đơn giản hơn |
-| Trạng thái nhấn | Có thể tùy chỉnh bằng `pressed` | Tự giảm opacity |
-| Event hỗ trợ | Nhiều event hơn | Chủ yếu dùng `onPress` |
-| Khi nên dùng | UI cần phản hồi nhấn phức tạp | Button đơn giản, cần hiệu ứng mờ nhanh |
+| Tiêu chí         | Pressable                       | TouchableOpacity                       |
+| ---------------- | ------------------------------- | -------------------------------------- |
+| Mức độ linh hoạt | Cao hơn                         | Đơn giản hơn                           |
+| Trạng thái nhấn  | Có thể tùy chỉnh bằng `pressed` | Tự giảm opacity                        |
+| Event hỗ trợ     | Nhiều event hơn                 | Chủ yếu dùng `onPress`                 |
+| Khi nên dùng     | UI cần phản hồi nhấn phức tạp   | Button đơn giản, cần hiệu ứng mờ nhanh |
 
 Với code mới, có thể ưu tiên `Pressable` khi cần kiểm soát trạng thái tương tác rõ hơn. `TouchableOpacity` vẫn phù hợp cho các button đơn giản.
 
@@ -203,11 +200,7 @@ export default function WelcomeScreen() {
 
       <Text>Nhập tên của bạn</Text>
 
-      <TextInput
-        value={name}
-        onChangeText={setName}
-        placeholder="Họ và tên"
-      />
+      <TextInput value={name} onChangeText={setName} placeholder="Họ và tên" />
 
       <Pressable onPress={() => setMessage(`Xin chào, ${name}!`)}>
         <Text>Chào bằng Pressable</Text>
@@ -246,14 +239,14 @@ Text hiển thị lời nhắn mới
 
 ### 10. Lỗi thường gặp
 
-| Lỗi | Cách hiểu đúng |
-| --- | --- |
-| `<View>Hello</View>` | Văn bản phải nằm trong `<Text>` |
-| `<Image source="url" />` | Ảnh URL cần dùng `source={{ uri: "url" }}` |
-| Ảnh từ URL không hiển thị | Cần khai báo `width` và `height` |
-| Dùng `onClick` cho `Pressable` | React Native dùng `onPress` |
-| Dùng `event.target.value` với `TextInput` | `onChangeText` nhận trực tiếp chuỗi mới |
-| Quên style cho `TextInput` | Input có thể khó nhìn nếu không có border/padding |
+| Lỗi                                       | Cách hiểu đúng                                    |
+| ----------------------------------------- | ------------------------------------------------- |
+| `<View>Hello</View>`                      | Văn bản phải nằm trong `<Text>`                   |
+| `<Image source="url" />`                  | Ảnh URL cần dùng `source={{ uri: "url" }}`        |
+| Ảnh từ URL không hiển thị                 | Cần khai báo `width` và `height`                  |
+| Dùng `onClick` cho `Pressable`            | React Native dùng `onPress`                       |
+| Dùng `event.target.value` với `TextInput` | `onChangeText` nhận trực tiếp chuỗi mới           |
+| Quên style cho `TextInput`                | Input có thể khó nhìn nếu không có border/padding |
 
 ### 11. File example
 
