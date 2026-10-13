@@ -85,8 +85,8 @@ export default function App() {
             <View style={styles.infoBox}>
               <Text style={styles.infoTitle}>Breakpoint</Text>
               <Text style={styles.infoText}>
-                Dưới 600: 1 cột. Từ 600: 2 cột. Từ 900: 3 cột và giới hạn
-                chiều rộng nội dung.
+                Dưới 600: 1 cột. Từ 600: 2 cột. Từ 900: 3 cột và giới hạn chiều
+                rộng nội dung.
               </Text>
             </View>
           }
