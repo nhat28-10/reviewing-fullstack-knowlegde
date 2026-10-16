@@ -1,12 +1,3 @@
-/**
- * Cài dependency (chỉ cần làm lại sau khi xoá node_modules):
- *   cd NodeJS
- *   npm install
- *
- * Chạy ví dụ:
- *   npm run start:v8
- */
-
 "use strict";
 
 const express = require("express");

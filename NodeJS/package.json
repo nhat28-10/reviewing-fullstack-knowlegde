@@ -5,7 +5,8 @@
   "scripts": {
     "start:basics": "node Example/nodejs-basics.js",
     "start:v8": "node Example/v8-engine.js",
-    "start:single-threaded": "node Example/single-threaded.js"
+    "start:single-threaded": "node Example/single-threaded.js",
+    "start:event-loop": "node Example/event-loop.js"
   },
   "dependencies": {
     "express": "^5.1.0"
