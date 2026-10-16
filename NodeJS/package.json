@@ -1,0 +1,13 @@
+{
+  "name": "nodejs-theory-examples",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start:basics": "node Example/nodejs-basics.js",
+    "start:v8": "node Example/v8-engine.js",
+    "start:single-threaded": "node Example/single-threaded.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

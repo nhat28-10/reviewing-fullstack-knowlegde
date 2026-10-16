@@ -105,10 +105,17 @@ Các giá trị cụ thể phụ thuộc phiên bản Node.js, hệ điều hàn
 
 ## 7. Ví dụ thực hành
 
-Chạy file [NodeJS/Example/v8-engine.js](../Example/v8-engine.js):
+Các ví dụ trong thư mục `NodeJS/Example` dùng ExpressJS. Cài dependency một lần từ thư mục `NodeJS`:
 
 ```bash
-node NodeJS/Example/v8-engine.js
+cd NodeJS
+npm install
 ```
 
-Ví dụ in phiên bản V8, thống kê heap và minh hoạ việc object chỉ có thể được thu hồi sau khi không còn tham chiếu.
+Sau đó chạy file [NodeJS/Example/v8-engine.js](../Example/v8-engine.js):
+
+```bash
+npm run start:v8
+```
+
+Gọi `GET /v8-info` để xem phiên bản V8 và thống kê heap, hoặc `GET /sum` để xem một biểu thức JavaScript được thực thi trong route handler.

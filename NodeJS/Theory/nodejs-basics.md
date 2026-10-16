@@ -115,10 +115,17 @@ Khi client gửi `GET http://localhost:3000/users`, server trả về JSON. Node
 
 ## 7. Ví dụ thực hành
 
-Xem và chạy file [NodeJS/Example/nodejs-basics.js](../Example/nodejs-basics.js):
+Các ví dụ trong thư mục `NodeJS/Example` dùng ExpressJS. Cài dependency một lần từ thư mục `NodeJS`:
 
 ```bash
-node NodeJS/Example/nodejs-basics.js
+cd NodeJS
+npm install
+```
+
+Sau đó chạy file [NodeJS/Example/nodejs-basics.js](../Example/nodejs-basics.js):
+
+```bash
+npm run start:basics
 ```
 
 Sau đó mở `http://localhost:3000/health` hoặc gọi `GET /users`. Nhấn `Ctrl + C` để dừng server.
