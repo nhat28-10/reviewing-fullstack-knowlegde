@@ -10,7 +10,8 @@
     "start:nonblocking": "node Example/nonblocking-asynchronous.js",
     "start:commonjs": "node Example/commonjs-esmodule/commonjs/app.cjs",
     "start:esm": "node Example/commonjs-esmodule/esm/app.mjs",
-    "start:error-handling": "node Example/error-handling.js"
+    "start:error-handling": "node Example/error-handling.js",
+    "start:promise-rejection": "node Example/promise-rejection.js"
   },
   "dependencies": {
     "express": "^5.1.0"
