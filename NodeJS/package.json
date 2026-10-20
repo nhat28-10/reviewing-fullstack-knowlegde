@@ -12,10 +12,12 @@
     "start:esm": "node Example/commonjs-esmodule/esm/app.mjs",
     "start:error-handling": "node Example/error-handling.js",
     "start:promise-rejection": "node Example/promise-rejection.js",
-    "start:bcrypt": "node Example/password-hashing-bcrypt.js"
+    "start:bcrypt": "node Example/password-hashing-bcrypt.js",
+    "start:jwt": "node --env-file=.env Example/jwt-authentication.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2"
   }
 }
