@@ -5,7 +5,8 @@
     "router": "node expressapp-router-controller-example.js",
     "request-flow": "node request-response-next-example.js",
     "crud": "node get-post-put-patch-delete-example.js",
-    "request-data": "node req.params-req.query-req.body-example.js"
+    "request-data": "node req.params-req.query-req.body-example.js",
+    "middleware": "node middleware-chain-example.js"
   },
   "dependencies": {
     "express": "^5"
