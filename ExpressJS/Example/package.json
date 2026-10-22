@@ -1,0 +1,13 @@
+{
+  "name": "expressjs-examples",
+  "private": true,
+  "scripts": {
+    "router": "node expressapp-router-controller-example.js",
+    "request-flow": "node request-response-next-example.js",
+    "crud": "node get-post-put-patch-delete-example.js",
+    "request-data": "node req.params-req.query-req.body-example.js"
+  },
+  "dependencies": {
+    "express": "^5"
+  }
+}

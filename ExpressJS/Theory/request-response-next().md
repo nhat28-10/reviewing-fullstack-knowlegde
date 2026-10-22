@@ -190,7 +190,7 @@ app.use((err, req, res, next) => {
 
 ## Thực hành
 
-Xem bài thực hành có request validation, middleware logger và error handler tại [Request–Response–Next Example](../Example/request-response-next-example.md).
+Xem source code chạy được tại [Request–Response–Next Example](../Example/request-response-next-example.js).
 
 ## Tham khảo
 

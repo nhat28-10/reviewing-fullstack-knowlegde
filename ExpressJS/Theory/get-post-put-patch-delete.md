@@ -207,7 +207,7 @@ Ví dụ, gọi `DELETE /users/1` nhiều lần vẫn nhằm đạt cùng trạn
 
 ## Thực hành
 
-Xem hướng dẫn tạo Users CRUD API, kèm các lệnh kiểm tra từng method, tại [CRUD HTTP Methods Example](../Example/get-post-put-patch-delete-example.md).
+Xem source code CRUD chạy được tại [CRUD HTTP Methods Example](../Example/get-post-put-patch-delete-example.js).
 
 ## Tham khảo
 

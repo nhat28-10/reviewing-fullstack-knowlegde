@@ -156,4 +156,4 @@ Các điểm cần nhớ:
 
 ## Thực hành
 
-Xem bài thực hành có hướng dẫn chạy, kiểm tra endpoint và bài tập mở rộng tại [Express App–Router–Controller Example](../Example/expressapp-router-controller-example.md).
+Xem source code chạy được tại [Express App–Router–Controller Example](../Example/expressapp-router-controller-example.js).
