@@ -9,7 +9,8 @@
     "middleware": "node middleware-chain-example.js",
     "app-router-middleware": "node application-router-middleware-example.js",
     "auth": "node authentication-middleware-example.js",
-    "error-handling": "node error-handling-middleware-example.js"
+    "error-handling": "node error-handling-middleware-example.js",
+    "restful-routes": "node restful-route-naming-example.js"
   },
   "dependencies": {
     "express": "^5",
