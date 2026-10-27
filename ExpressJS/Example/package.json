@@ -14,9 +14,12 @@
     "validation": "node validation-body-params-example.js",
     "token-flow": "node jwt-access-token-refresh-token-example.js",
     "authorization": "node authorization-based-on-role-example.js",
-    "status-codes": "node http-status-code-example.js"
+    "status-codes": "node http-status-code-example.js",
+    "cors-env": "node cors-config-env-example.js"
   },
   "dependencies": {
+    "cors": "^2",
+    "dotenv": "^16",
     "express": "^5",
     "jsonwebtoken": "^9"
   }
