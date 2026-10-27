@@ -13,7 +13,8 @@
     "restful-routes": "node restful-route-naming-example.js",
     "validation": "node validation-body-params-example.js",
     "token-flow": "node jwt-access-token-refresh-token-example.js",
-    "authorization": "node authorization-based-on-role-example.js"
+    "authorization": "node authorization-based-on-role-example.js",
+    "status-codes": "node http-status-code-example.js"
   },
   "dependencies": {
     "express": "^5",
