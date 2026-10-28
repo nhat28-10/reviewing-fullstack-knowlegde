@@ -13,18 +13,18 @@
 
 ## 1. CORS là gì?
 
-**CORS** (*Cross-Origin Resource Sharing*) là cơ chế dựa trên HTTP headers. Server dùng nó để nói với **trình duyệt** rằng JavaScript từ origin nào được phép đọc response của request cross-origin.
+**CORS** (_Cross-Origin Resource Sharing_) là cơ chế dựa trên HTTP headers. Server dùng nó để nói với **trình duyệt** rằng JavaScript từ origin nào được phép đọc response của request cross-origin.
 
 ![Minh họa CORS](./Image/whatisCORS.png)
 
 Một **origin** gồm `scheme + host + port`; path không thuộc origin.
 
-| Frontend | Backend | Cùng origin? | Lý do |
-| --- | --- | --- | --- |
-| `http://localhost:3000` | `http://localhost:3000` | Có | Ba thành phần giống nhau |
-| `http://localhost:5173` | `http://localhost:3000` | Không | Khác port |
-| `http://example.com` | `https://example.com` | Không | Khác scheme |
-| `https://app.example.com` | `https://api.example.com` | Không | Khác host |
+| Frontend                  | Backend                   | Cùng origin? | Lý do                    |
+| ------------------------- | ------------------------- | ------------ | ------------------------ |
+| `http://localhost:3000`   | `http://localhost:3000`   | Có           | Ba thành phần giống nhau |
+| `http://localhost:5173`   | `http://localhost:3000`   | Không        | Khác port                |
+| `http://example.com`      | `https://example.com`     | Không        | Khác scheme              |
+| `https://app.example.com` | `https://api.example.com` | Không        | Khác host                |
 
 Trình duyệt áp dụng **Same-Origin Policy**. Nếu API không trả CORS headers phù hợp, browser chặn JavaScript đọc response. CORS không phải Authentication, Authorization hay biện pháp chặn mọi HTTP client: `curl`, Postman và server khác vẫn có thể gửi request. API nhạy cảm vẫn phải xác thực và phân quyền.
 
@@ -119,13 +119,13 @@ Không dùng `origin: "*"` với credentialed request. Browser sẽ từ chối 
 
 Biến môi trường tách cấu hình khỏi source code. Ví dụ thường gặp:
 
-| Biến | Mục đích |
-| --- | --- |
-| `PORT` | Port server lắng nghe |
-| `NODE_ENV` | Môi trường chạy, như `development` hoặc `production` |
-| `CLIENT_ORIGINS` | Danh sách frontend được phép, cách nhau bởi dấu phẩy |
-| `DATABASE_URL` | Chuỗi kết nối cơ sở dữ liệu |
-| `JWT_ACCESS_SECRET` | Secret ký access token |
+| Biến                | Mục đích                                             |
+| ------------------- | ---------------------------------------------------- |
+| `PORT`              | Port server lắng nghe                                |
+| `NODE_ENV`          | Môi trường chạy, như `development` hoặc `production` |
+| `CLIENT_ORIGINS`    | Danh sách frontend được phép, cách nhau bởi dấu phẩy |
+| `DATABASE_URL`      | Chuỗi kết nối cơ sở dữ liệu                          |
+| `JWT_ACCESS_SECRET` | Secret ký access token                               |
 
 `process.env` luôn trả về chuỗi (hoặc `undefined`), vì vậy phải kiểm tra biến bắt buộc và chuyển đổi các giá trị số/boolean. Node.js hiện đại có thể nạp `.env` bằng `--env-file`; dự án cũng thường dùng `dotenv` để tương thích cách chạy phổ biến.
 
@@ -160,12 +160,12 @@ Không commit `.env` chứa secret. Hãy commit `.env.example` chỉ gồm tên 
 
 ## 6. Development và Production
 
-| Cấu hình | Development | Production |
-| --- | --- | --- |
-| `NODE_ENV` | `development` | `production` |
-| `CLIENT_ORIGINS` | `http://localhost:5173` | `https://app.example.com` |
-| `DATABASE_URL` | Database local | Database production |
-| Secrets | File local, không commit | Secret manager hoặc biến của nền tảng deploy |
+| Cấu hình         | Development              | Production                                   |
+| ---------------- | ------------------------ | -------------------------------------------- |
+| `NODE_ENV`       | `development`            | `production`                                 |
+| `CLIENT_ORIGINS` | `http://localhost:5173`  | `https://app.example.com`                    |
+| `DATABASE_URL`   | Database local           | Database production                          |
+| Secrets          | File local, không commit | Secret manager hoặc biến của nền tảng deploy |
 
 Khi đổi `.env`, tiến trình Node đang chạy thường phải được khởi động lại. Đừng dựa vào `NODE_ENV` để quyết định một cách mơ hồ origin nào được tin cậy; đặt allowlist rõ ràng ở cấu hình deploy.
 
@@ -188,15 +188,15 @@ npm run cors-env
 
 ## 8. Checklist và lỗi thường gặp
 
-| Hiểu nhầm / lỗi | Cách hiểu đúng |
-| --- | --- |
-| Postman gọi được nên browser cũng gọi được | Browser còn thực thi CORS |
-| CORS là Authentication | CORS chỉ kiểm soát việc browser cho JavaScript đọc response |
-| `localhost:3000` và `localhost:5173` là cùng origin | Khác port nên khác origin |
-| Có thể dùng `*` cùng `credentials: true` | Không; dùng origin cụ thể/allowlist |
-| `.env` được Express tự đọc | Cần `dotenv`, `--env-file` hoặc cơ chế nạp khác |
-| Đưa secret vào `.env` là có thể commit | Không; `.env` thật vẫn là dữ liệu nhạy cảm |
-| CORS chặn được mọi client | Không; vẫn cần authentication, authorization, rate limit… |
+| Hiểu nhầm / lỗi                                     | Cách hiểu đúng                                              |
+| --------------------------------------------------- | ----------------------------------------------------------- |
+| Postman gọi được nên browser cũng gọi được          | Browser còn thực thi CORS                                   |
+| CORS là Authentication                              | CORS chỉ kiểm soát việc browser cho JavaScript đọc response |
+| `localhost:3000` và `localhost:5173` là cùng origin | Khác port nên khác origin                                   |
+| Có thể dùng `*` cùng `credentials: true`            | Không; dùng origin cụ thể/allowlist                         |
+| `.env` được Express tự đọc                          | Cần `dotenv`, `--env-file` hoặc cơ chế nạp khác             |
+| Đưa secret vào `.env` là có thể commit              | Không; `.env` thật vẫn là dữ liệu nhạy cảm                  |
+| CORS chặn được mọi client                           | Không; vẫn cần authentication, authorization, rate limit…   |
 
 ### Tự kiểm tra
 
