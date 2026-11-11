@@ -4,214 +4,246 @@
 
 ### 1. CORS là gì?
 
-- CORS (Cross-Origin Resource Sharing) là một cơ chế dựa trên HTTP Headers, cho phép Server thông báo cho Browser biết những Origin nào được phép truy cập Response từ Server trong ngữ cảnh Cross-Origin. Hiểu đơn giản:
-- CORS giúp Browser quyết định liệu JavaScript từ một Website có được phép đọc dữ liệu từ API thuộc Origin khác hay không.
-- Giả sử bạn đang phát triển hệ thống FullStack:
-  - Frontend ReactJS: http://localhost:5173
-  - Backend NestJS: http://localhost:3000
-- FE gửi:
+**CORS (Cross-Origin Resource Sharing)** là cơ chế dựa trên HTTP header, cho phép server thông báo cho trình duyệt biết origin nào được phép đọc response trong ngữ cảnh cross-origin.
 
-```tsx
+Hiểu đơn giản: CORS giúp trình duyệt quyết định JavaScript từ một website có được phép đọc dữ liệu từ API thuộc origin khác hay không.
+
+Giả sử hệ thống full-stack gồm:
+
+- Frontend React: `http://localhost:5173`
+- Backend NestJS: `http://localhost:3000`
+
+Frontend gửi request:
+
+```ts
 fetch("http://localhost:3000/api/users");
 ```
 
-- Hai địa chỉ trên khác Port nên chúng được xem là khác Origin.
-- Nếu Backend không cho phép Origin của Frontend truy cập qua CORS, Browser có thể chặn JavaScript đọc Response, dù Request đã được gửi đến Server.
+Hai địa chỉ khác port nên khác origin. Nếu backend không trả về CORS header phù hợp, trình duyệt sẽ không cho JavaScript đọc response.
+
+> CORS chủ yếu là chính sách do **trình duyệt** thực thi. Nó không thay thế authentication, authorization, CSRF protection hay việc kiểm tra dữ liệu ở server.
 
 ### 2. Origin là gì?
 
-- Origin được xác định từ ba thành phần:
-  \[
-  Origin = Scheme + Host + Port
-  \]
-- Ví dụ Origin:
+Một origin được xác định bởi ba thành phần:
 
-```Plain text
-http://localhost:5173
+```text
+Origin = Scheme + Host + Port
 ```
 
-Thành phần Giá trị
-Scheme (giao thức) http
-Host localhost
-Port 5173
+Ví dụ: `http://localhost:5173`
 
-- Hai URL được xem là cùng Origin khi cả ba thành phần trên giống nhau. Ví dụ so với http://localhost:5173:
-  URL Cùng Origin?
-  http://localhost:5173/users Có
-  http://localhost:3000/users Không — khác Port
-  https://localhost:5173/users Không — khác Scheme
-  http://127.0.0.1:5173/users Không — khác Host
-- Điểm thường gặp trong thực tế: Chỉ cần khác Port đã là Cross-Origin, dù Frontend và Backend cùng chạy trên máy tính của bạn.
+| Thành phần | Giá trị |
+| --- | --- |
+| Scheme (giao thức) | `http` |
+| Host | `localhost` |
+| Port | `5173` |
+
+Hai URL cùng origin khi cả scheme, host và port đều giống nhau:
+
+| URL so với `http://localhost:5173` | Cùng origin? | Lý do |
+| --- | --- | --- |
+| `http://localhost:5173/users` | Có | Chỉ khác path |
+| `http://localhost:3000/users` | Không | Khác port |
+| `https://localhost:5173/users` | Không | Khác scheme |
+| `http://127.0.0.1:5173/users` | Không | Khác host |
+
+Chỉ cần khác port đã là cross-origin, dù frontend và backend cùng chạy trên một máy.
 
 ### 3. CORS hoạt động như thế nào?
 
-- Giả sử ReactJS gọi NestJS API
-  ![alt text](./img/HowCORSWork.png)
-- Ví dụ Browser gửi Request:
+![Luồng hoạt động của CORS](./img/HowCORSWork.png)
+
+Trình duyệt có thể gửi:
 
 ```http
-GET /api/users
+GET /api/users HTTP/1.1
+Host: localhost:3000
 Origin: http://localhost:5173
 ```
 
-- Nếu Backend cho phép Origin này, Response có thể chứa:
+Nếu cho phép origin này, server trả về:
 
 ```http
 HTTP/1.1 200 OK
 Access-Control-Allow-Origin: http://localhost:5173
+Vary: Origin
 Content-Type: application/json
+
+[{"id":1,"name":"Nhat"}]
 ```
 
-- Khi đó Browser có thể cho JavaScript truy cập Response.
-- Nếu thiếu Header cho phép thích hợp, Browser sẽ chặn JavaScript đọc Response.
-- Điểm quan trọng: CORS chủ yếu được Browser thực thi. Nó không phải một hệ thống Authentication hoặc Authorization của Backend.
+Trình duyệt so sánh `Origin` của request với `Access-Control-Allow-Origin` trong response. Nếu hợp lệ, JavaScript được đọc response; nếu thiếu hoặc không khớp, trình duyệt chặn quyền truy cập response.
 
-### 4. Same-Origin Policy và CORS khác nhau thế nào?
+`Vary: Origin` báo cho cache rằng response có thể thay đổi theo request header `Origin`, tránh dùng nhầm response CORS đã cache cho origin khác.
 
-- Hai khái niệm này liên quan chặt chẽ
-  Same-Origin Policy CORS
-  Chính sách bảo mật của Browser Cơ chế cho phép một số truy cập Cross-Origin
-  Hạn chế JavaScript đọc dữ liệu từ Origin khác Cho phép Server khai báo Origin được truy cập
-  Mặc định được Browser áp dụng Dựa trên các HTTP Headers
-- Bạn có thể hiểu: Same-Origin Policy đặt ra giới hạn, còn CORS cung cấp cách cho phép truy cập Cross-Origin trong những trường hợp phù hợp.
+### 4. Same-Origin Policy và CORS
 
-### 5. Preflight Request là gì?
+| Same-Origin Policy (SOP) | CORS |
+| --- | --- |
+| Chính sách bảo mật mặc định của trình duyệt | Cơ chế nới lỏng SOP có kiểm soát |
+| Hạn chế script đọc dữ liệu từ origin khác | Cho phép server khai báo origin được đọc response |
+| Được trình duyệt thực thi | Hoạt động thông qua HTTP header |
 
-- Preflight Request là Request mà Browser tự động gửi trước một số Cross-Origin Requests để kiểm tra xem Server có cho phép Request thực tế hay không.
-- Preflight thường sử dụng HTTP Method OPTIONS.
-- Ví dụ ReactJS gửi:
+SOP đặt ra giới hạn; CORS là cách server cho phép một số truy cập cross-origin phù hợp.
 
-```tsx
-await axios.post(
-  "http://localhost:3000/api/products",
-  {
-    name: "Laptop Dell",
-    price: 20000000,
+### 5. Simple request và preflight request
+
+Không phải mọi cross-origin request đều cần preflight. Một **simple request** có thể được gửi thẳng nếu method, header và `Content-Type` thuộc nhóm an toàn do chuẩn CORS quy định.
+
+Với request không thuộc nhóm simple, trình duyệt tự gửi **preflight request** bằng method `OPTIONS` để hỏi quyền trước. Ví dụ `POST` có `Authorization` và `Content-Type: application/json` thường kích hoạt preflight:
+
+```ts
+await fetch("http://localhost:3000/api/products", {
+  method: "POST",
+  headers: {
+    Authorization: "Bearer <access_token>",
+    "Content-Type": "application/json",
   },
-  {
-    headers: {
-      Authorization: "Bearer <access_token>",
-      "Content-Type": "application/json",
-    },
-  },
-);
+  body: JSON.stringify({ name: "Laptop Dell", price: 20_000_000 }),
+});
 ```
 
-- Vì Request này sử dụng Authorization và Content-Type: application/json, Browser thông thường sẽ cần Preflight khi gửi Cross-Origin.
-  ![alt text](./img/FlowPreflightRequest.png)
-- Ví dụ Preflight:
+![Luồng preflight request](./img/FlowPreflightRequest.png)
+
+Trình duyệt hỏi server:
 
 ```http
-OPTIONS /api/products
+OPTIONS /api/products HTTP/1.1
 Origin: http://localhost:5173
 Access-Control-Request-Method: POST
 Access-Control-Request-Headers: authorization,content-type
 ```
 
-- Server có thể trả:
+Server có thể chấp thuận:
 
 ```http
 HTTP/1.1 204 No Content
 Access-Control-Allow-Origin: http://localhost:5173
 Access-Control-Allow-Methods: GET, POST, PATCH, DELETE
 Access-Control-Allow-Headers: Authorization, Content-Type
+Access-Control-Max-Age: 600
+Vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
 ```
 
-- Sau đó Browser có thể tiếp tục với POST nếu các điều kiện được đáp ứng.
-- Lưu ý: Không phải mọi Cross-Origin Request đều cần Preflight. Ví dụ một GET đơn giản với các Headers thông thường có thể được gửi trực tiếp.
+Nếu các điều kiện khớp, trình duyệt mới gửi request `POST` thật. `Access-Control-Max-Age` cho phép cache kết quả preflight trong một khoảng thời gian; trình duyệt có thể áp dụng giới hạn riêng.
 
-### 6. Các CORS Headers quan trọng
+### 6. Các CORS header quan trọng
 
-Header Mục đích
-Origin Cho biết Origin của Request
-Access-Control-Allow-Origin Origin được Server cho phép
-Access-Control-Allow-Methods Các HTTP Methods được cho phép trong Preflight
-Access-Control-Allow-Headers Những Request Headers được cho phép trong Preflight
-Access-Control-Allow-Credentials Cho biết có cho phép Browser chia sẻ Response với Request có Credentials hay không
+| Header | Chiều | Mục đích |
+| --- | --- | --- |
+| `Origin` | Request | Origin khởi tạo request |
+| `Access-Control-Request-Method` | Preflight request | Method dự kiến của request thật |
+| `Access-Control-Request-Headers` | Preflight request | Các header dự kiến gửi trong request thật |
+| `Access-Control-Allow-Origin` | Response | Origin được phép đọc response |
+| `Access-Control-Allow-Methods` | Preflight response | Các method được cho phép |
+| `Access-Control-Allow-Headers` | Preflight response | Các request header được cho phép |
+| `Access-Control-Allow-Credentials` | Response | Cho phép chia sẻ response khi request có credentials |
+| `Access-Control-Expose-Headers` | Response | Cho JavaScript đọc thêm response header |
+| `Access-Control-Max-Age` | Preflight response | Thời gian cache kết quả preflight |
 
-### 7. Cấu hình CORS trong NestJS
+### 7. CORS và credentials
 
-- Giả sử Frontend ReactJS chạy trên http://localhost:5173, Backend NestJS chạy trên http://localhost:3000.
-- Trong main.ts
+Credentials có thể là cookie, HTTP authentication hoặc chứng chỉ TLS phía client. Với `fetch`, gửi cookie cross-origin bằng:
 
-```tsx
+```ts
+fetch("http://localhost:3000/api/profile", {
+  credentials: "include",
+});
+```
+
+Server phải trả về:
+
+```http
+Access-Control-Allow-Origin: http://localhost:5173
+Access-Control-Allow-Credentials: true
+```
+
+Khi dùng credentials, `Access-Control-Allow-Origin` không được là `*`; server phải trả về origin cụ thể đã được kiểm tra. Cookie cross-site còn phụ thuộc các thuộc tính như `SameSite` và `Secure`—bật CORS không tự làm cookie được gửi đi.
+
+### 8. Cấu hình CORS trong NestJS
+
+Trong `main.ts`:
+
+```ts
 const app = await NestFactory.create(AppModule);
 
 app.enableCors({
   origin: ["http://localhost:5173"],
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+  maxAge: 600,
 });
 
 await app.listen(3000);
 ```
 
-- Giải thích:
-  - origin: Cho phép Frontend từ http://localhost:5173.
-  - methods: Danh sách HTTP Methods được cho phép trong cấu hình CORS.
-  - allowedHeaders: Những Request Headers được chấp nhận trong Preflight.
-- Khi ReactJS gọi API từ Origin đã được cho phép, Browser có thể tiếp tục xử lý Response theo các quy tắc CORS.
-- NestJS cũng hỗ trợ cấu hình credentials: true khi cần gửi các Credentials như Cookie giữa những Origin khác nhau.
+- `origin`: danh sách frontend được phép.
+- `methods`: các method được chấp nhận khi kiểm tra CORS.
+- `allowedHeaders`: các request header được chấp nhận trong preflight.
+- `credentials`: cho phép response của request có credentials được chia sẻ với frontend.
+- `maxAge`: thời gian cache kết quả preflight.
 
-### 8. Cấu hình CORS trong ExpressJS
+Nếu không dùng cookie hoặc HTTP authentication cross-origin thì không cần bật `credentials`.
 
-- Với Express, bạn có thể sử dụng Middleware cors
+### 9. Cấu hình CORS trong ExpressJS
 
-```tsx
-import express from "express";
+Với Express, có thể dùng middleware `cors`:
+
+```ts
 import cors from "cors";
+import express from "express";
 
 const app = express();
 
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-  }),
-);
-
+app.use(cors({ origin: "http://localhost:5173" }));
 app.use(express.json());
 
-app.get("/api/users", (req, res) => {
+app.get("/api/users", (_req, res) => {
   res.json([{ id: 1, name: "Nhat" }]);
 });
 
 app.listen(3000);
 ```
 
-- Ở đây Middleware cors giúp Server thiết lập những HTTP Response Headers cần thiết.
+Middleware thiết lập các CORS response header cần thiết. CORS vẫn phải được cấu hình theo allowlist phù hợp với môi trường triển khai.
 
-### 9. CORS có áp dụng cho React Native và Postman không?
+### 10. CORS có áp dụng cho React Native và Postman không?
 
-- Đây là câu hỏi khá thực tế rằng CORS chủ yếu được thực thi bởi Browers
-- Ví dụ:
-  - ReactJS chạy trong Chrome: Bị chi phối bởi CORS.
-  - React Native sử dụng Native Networking thông thường: Không bị Browser CORS Policy chi phối như Website.
-  - Postman: Không bị Browser CORS Policy hạn chế theo cách thông thường.
-  - Backend Node.js gọi API khác: Không bị Browser CORS Policy chi phối.
-- Vì vậy, trường hợp Postman gọi API thành công nhưng ReactJS trên Browser báo CORS Error là hoàn toàn có thể xảy ra. Điều này không nhất thiết có nghĩa Backend API đã bị lỗi nghiệp vụ.
+CORS chủ yếu được thực thi bởi trình duyệt:
 
-### 10. Những lỗi thường gặp
+- React chạy trong Chrome: chịu chính sách CORS.
+- React Native dùng native networking: thông thường không chịu browser CORS policy.
+- Postman/cURL: không bị trình duyệt chặn theo CORS.
+- Backend Node.js gọi API khác: không chịu browser CORS policy.
 
-1. Nghĩ CORS là cơ chế Authentication.
-   - Sai. CORS không thay thế JWT, Guard hoặc RBAC.
-2. Cho rằng Backend không nhận được Request khi Browser báo CORS Error.
-   - Không phải lúc nào cũng đúng. Với một số Request, Server vẫn có thể nhận và xử lý nhưng Browser chặn JavaScript đọc Response. Với Preflight thất bại, Browser có thể không gửi Request chính.
-3. Cấu hình Access-Control-Allow-Origin: \* cùng Credentials.
-   - Với Cross-Origin Request sử dụng Credentials như Cookie, Browser không cho phép sử dụng wildcard \* làm giá trị Access-Control-Allow-Origin. Cần khai báo Origin cụ thể và cấu hình Credentials phù hợp.
-4. Nghĩ tất cả Cross-Origin Requests đều phải gửi OPTIONS trước.
-   - Sai. Chỉ những Request đáp ứng điều kiện cần Preflight mới phải thực hiện bước này.
-5. Cho phép mọi Origin mà không cân nhắc yêu cầu bảo mật.
-   - Trong Production, nên xác định những Origin được phép theo nhu cầu ứng dụng, đặc biệt khi có Cookies hoặc dữ liệu nhạy cảm.
+Vì vậy, API chạy thành công trong Postman nhưng frontend trên trình duyệt báo lỗi CORS là tình huống hoàn toàn có thể xảy ra. Gửi `Origin` bằng Postman/cURL chỉ giúp quan sát header; công cụ đó không thực thi chính sách như trình duyệt.
 
-### 11. Câu hỏi ôn tập
+### 11. Lỗi thường gặp
 
-1. CORS là gì?
-   - CORS được hiểu là Cross-Origin Resources Sharing. Nó là 1 cơ chế HTTP cho phép servers cụ thể origins nào được phếp truy cập vào tài nguyên thông qua browers
-2. Origin là gì?
-   - Origin được định nghĩa bởi scheme,host và port của 1 URL
-3. Preflight request là gì?
-   - Preflight request là 1 OPTIONS yêu cầu gửi bởi trình duyệt để kiểm tra yêu cầu cross-origin được cho phép
-4. Làm thế nào để mở CORS trong NestJS?
-   - Sử dụng app.enableCors() trong main.ts và cấu hình các origins được cho phép, các phương thức và các header
-5. Liệu CORS có áp dụng được cho Postman?
-   - Không, CORS chỉ dành cho trình duyệt, API clients như Postman không bị ngăn chặn bởi pháp lý CORS từ trình duyệt
+1. **Xem CORS là authentication hoặc authorization.** CORS không thay thế JWT, guard, RBAC hay kiểm tra quyền tại server.
+2. **Cho rằng server chắc chắn không nhận request khi thấy lỗi CORS.** Simple request có thể đã được xử lý nhưng response bị chặn; nếu preflight thất bại thì request thật thường chưa được gửi.
+3. **Dùng `Access-Control-Allow-Origin: *` cùng credentials.** Trình duyệt không chấp nhận wildcard trong trường hợp này.
+4. **Cho rằng mọi cross-origin request đều có `OPTIONS`.** Chỉ request cần preflight mới có bước này.
+5. **Nhầm CORS với CSRF protection.** Server vẫn cần chống CSRF khi xác thực bằng cookie.
+6. **Phản chiếu mọi giá trị `Origin` mà không kiểm tra.** Hành vi này tương đương cho phép mọi origin, đặc biệt nguy hiểm khi dùng credentials.
+7. **Quên xử lý `OPTIONS` hoặc đặt authentication trước preflight.** Preflight nhận `401/403` khiến request thật không được gửi.
+8. **Chỉ thêm CORS header vào response thành công.** Response lỗi cũng cần CORS header để frontend đọc được thông tin lỗi.
+
+### 12. Thực hành
+
+Chạy ví dụ Node.js không cần cài thư viện: [cors-example.js](../Example/cors-example.js).
+
+Ví dụ minh họa allowlist origin, simple request, preflight thành công/thất bại và response lỗi vẫn có CORS header.
+
+### 13. Câu hỏi ôn tập
+
+1. Origin được cấu thành từ những thành phần nào?
+2. CORS và Same-Origin Policy có quan hệ như thế nào?
+3. Khi nào trình duyệt gửi preflight request và request đó dùng method gì?
+4. Vì sao `Authorization` thường làm request cần preflight?
+5. Vì sao không thể dùng `Access-Control-Allow-Origin: *` với credentials?
+6. CORS có thay thế authentication, authorization hoặc CSRF protection không?
+7. Vì sao API có thể chạy trong Postman nhưng lỗi trên trình duyệt?
+8. `Vary: Origin` và `Access-Control-Max-Age` có vai trò gì?
